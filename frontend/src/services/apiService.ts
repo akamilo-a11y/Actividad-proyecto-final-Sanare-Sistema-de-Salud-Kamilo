@@ -1,14 +1,9 @@
 let envApiUrl = import.meta.env.VITE_API_URL;
 
-if (
-  (!envApiUrl || envApiUrl.includes('localhost')) &&
-  typeof window !== 'undefined' &&
-  window.location.hostname.includes('.onrender.com')
-) {
+// Si estamos navegando en Render (*.onrender.com), apuntar siempre al backend público en Render
+if (typeof window !== 'undefined' && window.location.hostname.includes('.onrender.com')) {
   envApiUrl = 'https://saludpublica-backend.onrender.com';
-}
-
-if (!envApiUrl) {
+} else if (!envApiUrl || envApiUrl === 'saludpublica-backend' || !envApiUrl.includes('.')) {
   envApiUrl = 'http://localhost:3001';
 }
 
