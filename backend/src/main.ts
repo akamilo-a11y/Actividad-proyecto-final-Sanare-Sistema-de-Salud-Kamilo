@@ -28,7 +28,15 @@ async function bootstrap() {
     credentials: true,
   });
 
-  app.setGlobalPrefix('api', { exclude: [''] });
+  app.setGlobalPrefix('api', { exclude: ['', 'health'] });
+
+  const httpAdapter = app.getHttpAdapter();
+  httpAdapter.get('/api', (req: any, res: any) => {
+    res.json({ status: 'ok', service: 'SaludPublica Connect API' });
+  });
+  httpAdapter.get('/health', (req: any, res: any) => {
+    res.json({ status: 'ok' });
+  });
 
   app.useGlobalPipes(
     new ValidationPipe({
