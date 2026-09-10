@@ -18,14 +18,10 @@ async function bootstrap() {
   ];
 
   app.enableCors({
-    origin: (origin, callback) => {
-      if (!origin || allowedOrigins.includes(origin) || origin.endsWith('.onrender.com')) {
-        callback(null, true);
-      } else {
-        callback(null, true);
-      }
-    },
+    origin: true,
     credentials: true,
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+    allowedHeaders: 'Content-Type,Accept,Authorization,X-Requested-With',
   });
 
   app.setGlobalPrefix('api', { exclude: ['', 'health'] });
