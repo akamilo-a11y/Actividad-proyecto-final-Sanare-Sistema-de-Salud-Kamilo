@@ -151,18 +151,23 @@ export class AppointmentsService {
       return created;
     });
 
-    await this.notificationsQueue.add(
-      'appointment-confirmed',
-      {
-        appointmentId: appointment.id,
-        patientName: appointment.patientName,
-        patientEmail: appointment.patientEmail,
-        doctorName: doctor.name,
-        date: appointmentDate.toISOString(),
-        cancellationToken: appointment.cancellationToken,
-      },
-      { attempts: 3, backoff: { type: 'exponential', delay: 5000 } },
-    );
+    try {
+      await this.notificationsQueue.add(
+        'appointment-confirmed',
+        {
+          appointmentId: appointment.id,
+          patientName: appointment.patientName,
+          patientEmail: appointment.patientEmail,
+          doctorName: doctor.name,
+          date: appointmentDate.toISOString(),
+          cancellationToken: appointment.cancellationToken,
+        },
+        { attempts: 3, backoff: { type: 'exponential', delay: 5000 } },
+      );
+    } catch (queueErr) {
+      // Redis puede no estar configurado en producción mínima, la reserva sigue siendo válida
+      console.warn('[Queue Warning] No se pudo encolar la notificación:', queueErr.message);
+    }
 
     return appointment;
   }

@@ -12,4 +12,16 @@ export class AppController {
   getStatus() {
     return this.appService.getStatus();
   }
+
+  @Get('api')
+  @ApiOperation({ summary: 'Estado de la API' })
+  getApiStatus() {
+    return this.appService.getStatus();
+  }
+
+  @Get('health')
+  @ApiOperation({ summary: 'Healthcheck para Render' })
+  getHealth() {
+    return { status: 'ok', timestamp: new Date().toISOString() };
+  }
 }
