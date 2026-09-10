@@ -1,4 +1,8 @@
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+let envApiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+if (envApiUrl && !envApiUrl.startsWith('http://') && !envApiUrl.startsWith('https://')) {
+  envApiUrl = `https://${envApiUrl}`;
+}
+const API_URL = envApiUrl;
 
 export const getToken = () => localStorage.getItem('token');
 

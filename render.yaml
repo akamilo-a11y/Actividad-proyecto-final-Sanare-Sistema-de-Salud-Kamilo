@@ -26,7 +26,7 @@ services:
         sync: false
       - key: FRONTEND_URL
         fromService:
-          type: web
+          type: static
           name: saludpublica-frontend
           property: host
 
@@ -37,8 +37,6 @@ services:
     name: saludpublica-frontend
     runtime: static
     rootDir: frontend
-    plan: free
-    region: oregon
     buildCommand: npm install && npm run build
     staticPublishPath: dist
     routes:
