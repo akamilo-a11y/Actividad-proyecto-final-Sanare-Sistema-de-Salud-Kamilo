@@ -1,7 +1,21 @@
-let envApiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3001';
-if (envApiUrl && !envApiUrl.startsWith('http://') && !envApiUrl.startsWith('https://')) {
+let envApiUrl = import.meta.env.VITE_API_URL;
+
+if (
+  (!envApiUrl || envApiUrl.includes('localhost')) &&
+  typeof window !== 'undefined' &&
+  window.location.hostname.includes('.onrender.com')
+) {
+  envApiUrl = 'https://saludpublica-backend.onrender.com';
+}
+
+if (!envApiUrl) {
+  envApiUrl = 'http://localhost:3001';
+}
+
+if (!envApiUrl.startsWith('http://') && !envApiUrl.startsWith('https://')) {
   envApiUrl = `https://${envApiUrl}`;
 }
+
 const API_URL = envApiUrl;
 
 export const getToken = () => localStorage.getItem('token');

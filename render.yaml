@@ -42,10 +42,7 @@ services:
         destination: /index.html
     envVars:
       - key: VITE_API_URL
-        fromService:
-          type: web
-          name: saludpublica-backend
-          property: host
+        value: https://saludpublica-backend.onrender.com
 
 databases:
   # -------------------------------------------------------------
