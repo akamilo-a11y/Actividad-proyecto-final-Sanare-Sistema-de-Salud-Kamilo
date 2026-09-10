@@ -25,10 +25,7 @@ services:
       - key: GEMINI_API_KEY
         sync: false
       - key: FRONTEND_URL
-        fromService:
-          type: static
-          name: saludpublica-frontend
-          property: host
+        value: https://saludpublica-frontend.onrender.com,http://localhost:3000
 
   # -------------------------------------------------------------
   # Frontend React SPA (Static Site)
