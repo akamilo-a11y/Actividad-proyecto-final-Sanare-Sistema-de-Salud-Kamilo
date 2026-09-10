@@ -37,6 +37,15 @@ async function bootstrap() {
   httpAdapter.get('/health', (req: any, res: any) => {
     res.json({ status: 'ok' });
   });
+  httpAdapter.get('/api/seed', (req: any, res: any) => {
+    const { exec } = require('child_process');
+    exec('npm run prisma:seed', (error: any, stdout: any, stderr: any) => {
+      if (error) {
+        return res.status(500).json({ error: error.message, stderr });
+      }
+      res.json({ message: 'Seed completado exitosamente', output: stdout });
+    });
+  });
 
   app.useGlobalPipes(
     new ValidationPipe({
