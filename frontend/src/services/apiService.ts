@@ -16,7 +16,7 @@ if (!envApiUrl.startsWith('http://') && !envApiUrl.startsWith('https://')) {
   envApiUrl = `https://${envApiUrl}`;
 }
 
-const API_URL = envApiUrl;
+const API_URL = envApiUrl.replace(/\/+$/, '');
 
 export const getToken = () => localStorage.getItem('token');
 
@@ -40,10 +40,19 @@ export async function fetchAPI<T>(path: string, options: RequestInit = {}): Prom
     headers['Authorization'] = `Bearer ${token}`;
   }
 
-  const response = await fetch(`${API_URL}${path}`, {
-    ...options,
-    headers,
-  });
+  const cleanPath = path.startsWith('/') ? path : `/${path}`;
+  const fullUrl = `${API_URL}${cleanPath}`;
+
+  let response: Response;
+  try {
+    response = await fetch(fullUrl, {
+      ...options,
+      headers,
+    });
+  } catch (netErr: any) {
+    console.error(`[fetchAPI Network Error] URL: ${fullUrl}`, netErr);
+    throw new Error(`Error de conexión hacia ${fullUrl} (${netErr.message || 'Failed to fetch'})`);
+  }
 
   const contentType = response.headers.get('content-type') || '';
   const isJson = contentType.includes('application/json');

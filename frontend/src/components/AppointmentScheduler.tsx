@@ -15,8 +15,6 @@ import {
   MapPin,
 } from 'lucide-react';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
-
 export default function AppointmentScheduler() {
   const { user } = useAuth();
   const [searchParams] = useSearchParams();
